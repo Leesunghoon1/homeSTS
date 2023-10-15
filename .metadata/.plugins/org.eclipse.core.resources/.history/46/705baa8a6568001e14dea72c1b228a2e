@@ -1,0 +1,5 @@
+package com.ezen.myproject.domian;
+
+public class BoardVO {
+
+}

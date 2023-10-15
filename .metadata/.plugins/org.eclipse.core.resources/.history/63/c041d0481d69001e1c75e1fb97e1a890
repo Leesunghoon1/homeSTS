@@ -1,0 +1,46 @@
+package com.ezen.myproject.controller;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ezen.myproject.domain.BoardVO;
+import com.ezen.myproject.service.BoardService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Controller
+@RequestMapping("/board/*") //메핑
+@Slf4j
+public class BoardController {
+	
+	@Inject
+	private BoardService bsv;
+	
+	@GetMapping("/register")
+	public String boardRehisterGet() {
+		return "/board/register";
+	}
+	
+	@PostMapping("/register")
+	public String regitser(BoardVO bvo) {
+		log.info(">>>>>레지스터>>>"+bvo.toString());
+		int isOK = bsv.register(bvo);
+		log.info(">>> board register >>>" +(isOK>0? "ok" : "fail"));
+		return "redirect:/board/list";
+	}
+	
+	@GetMapping("/list")
+	public String list(BoardVO bvo) {
+		List<BoardVO> list = bsv.getPageList(bvo);
+		log.info("리스트>>>>>" + list);
+		
+		return "/board/list";
+	}
+	
+}
